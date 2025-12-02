@@ -54,12 +54,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                             backdropFilter: 'blur(40px) saturate(180%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                             border: '1px solid rgba(255, 255, 255, 0.1)',
-                            borderRadius: 4,
                             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
                             color: 'white',
                             overflow: 'hidden',
-                            maxHeight: { xs: '85vh', sm: '80vh' },
-                            m: { xs: 2, sm: 3 }
+                            maxHeight: { xs: '90vh', sm: '80vh' },
+                            m: { xs: 1.5, sm: 3 },
+                            borderRadius: { xs: 3, sm: 4 },
                         }
                     }}
                 >
@@ -118,7 +118,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                         },
                     }}>
                         {/* Meal Times Section */}
-                        <Box sx={{ mb: 4 }}>
+                        <Box sx={{ mt: 2.5, mb: 4 }}>
                             <Chip
                                 label="YEMEK SAATLERİ"
                                 size="small"

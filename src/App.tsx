@@ -57,31 +57,30 @@ function App() {
       <Navbar />
 
       <Container
-        maxWidth="xl"
+        maxWidth="sm"
         sx={{
-          height: '100vh',
+          flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
-          py: { xs: 1, sm: 2 },
-          px: { xs: 1, sm: 2 }
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          pt: { xs: 1, sm: 3 },
+          pb: { xs: 3, sm: 4 },
+          px: { xs: 1.5, sm: 2, md: 3 },
+          gap: { xs: 2, sm: 3 }
         }}
       >
-        <Box sx={{ textAlign: 'center', mb: { xs: 1, sm: 2 }, zIndex: 10 }}>
-          <Typography
-            variant="h4"
-            component="h1"
-            sx={{
-              fontWeight: 700,
-              color: '#ffffff',
-              textShadow: '0 0 30px rgba(0, 242, 255, 0.3)',
-              fontFamily: '"Outfit", sans-serif',
-              letterSpacing: '-1px',
-              fontSize: { xs: '1.75rem', sm: '2rem', md: '2.5rem' }
-            }}
-          >
-            Günün Menüsü
-          </Typography>
+        <Box
+          sx={{
+            textAlign: 'center',
+            mb: { xs: 1.25, sm: 2.25 },
+            zIndex: 10,
+            width: '100%',
+            maxWidth: 380,
+            mx: 'auto'
+          }}
+        >
+          
           <Typography
             variant="subtitle2"
             sx={{
@@ -98,11 +97,11 @@ function App() {
         <Box sx={{
           flexGrow: 1,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'stretch',
           justifyContent: 'center',
           width: '100%',
           position: 'relative',
-          minHeight: 0
+          minHeight: { xs: 0, sm: 480 }
         }}>
           {loading ? (
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>

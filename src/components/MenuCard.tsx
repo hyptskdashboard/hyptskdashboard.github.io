@@ -23,15 +23,21 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
             <Card
                 sx={{
                     width: { xs: 320, sm: 360, md: 380 },
-                    minHeight: { xs: 550, sm: 600 },
-                    maxHeight: { xs: 650, sm: 700 },
+                    maxWidth: '100%',
+                    minHeight: { xs: 380, sm: 480 },
+                    maxHeight: { xs: 520, sm: 640 },
                     borderRadius: 5,
                     background: 'rgba(255, 255, 255, 0.03)',
                     backdropFilter: 'blur(40px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(40px) saturate(180%)',
                     border: '1px solid rgba(255, 255, 255, 0.08)',
                     boxShadow: isActive
-                        ? '0 8px 32px 0 rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset, 0 30px 60px -12px rgba(0, 242, 255, 0.15)'
+                        ? `
+                            0 8px 32px 0 rgba(0, 0, 0, 0.5),
+                            0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+                            0 -20px 40px -24px rgba(255, 215, 0, 0.45),
+                            0 24px 48px -24px rgba(179, 136, 255, 0.5)
+                          `
                         : '0 4px 16px 0 rgba(0, 0, 0, 0.3)',
                     color: 'white',
                     overflow: 'hidden',

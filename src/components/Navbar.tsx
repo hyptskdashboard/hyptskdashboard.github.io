@@ -20,7 +20,13 @@ const Navbar: React.FC = () => {
                     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
                 }}
             >
-                <Toolbar sx={{ justifyContent: 'space-between' }}>
+                <Toolbar
+                    sx={{
+                        justifyContent: 'space-between',
+                        minHeight: { xs: 56, sm: 64 },
+                        px: { xs: 1.5, sm: 2 },
+                    }}
+                >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Typography
                             variant="h6"
@@ -32,14 +38,14 @@ const Navbar: React.FC = () => {
                                 background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
-                                fontSize: { xs: '1.1rem', sm: '1.3rem' }
+                                fontSize: { xs: '1rem', sm: '1.3rem' }
                             }}
                         >
                             TSK Haydarpaşa Yurdu
                         </Typography>
                     </Box>
 
-                    <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Box sx={{ display: 'flex', gap: 0.75 }}>
                         <IconButton
                             onClick={() => setFilesOpen(true)}
                             sx={{
@@ -47,6 +53,9 @@ const Navbar: React.FC = () => {
                                 background: 'rgba(255,255,255,0.05)',
                                 backdropFilter: 'blur(5px)',
                                 border: '1px solid rgba(255,255,255,0.1)',
+                                width: { xs: 36, sm: 40 },
+                                height: { xs: 36, sm: 40 },
+                                '& svg': { fontSize: { xs: 18, sm: 20 } },
                                 '&:hover': {
                                     background: 'rgba(255,255,255,0.1)',
                                     border: '1px solid rgba(255,255,255,0.2)',
@@ -64,6 +73,9 @@ const Navbar: React.FC = () => {
                                 background: 'rgba(255,255,255,0.05)',
                                 backdropFilter: 'blur(5px)',
                                 border: '1px solid rgba(255,255,255,0.1)',
+                                width: { xs: 36, sm: 40 },
+                                height: { xs: 36, sm: 40 },
+                                '& svg': { fontSize: { xs: 18, sm: 20 } },
                                 '&:hover': {
                                     background: 'rgba(255,255,255,0.1)',
                                     border: '1px solid rgba(255,255,255,0.2)',
@@ -77,8 +89,7 @@ const Navbar: React.FC = () => {
                 </Toolbar>
             </AppBar>
 
-            {/* Spacer to prevent content from going under navbar */}
-            <Toolbar />
+            <Toolbar sx={{ minHeight: { xs: 40, sm: 52 } }} />
 
             <InfoModal open={infoOpen} onClose={() => setInfoOpen(false)} />
             <FileManagementModal open={filesOpen} onClose={() => setFilesOpen(false)} />

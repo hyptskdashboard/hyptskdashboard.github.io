@@ -1,9 +1,9 @@
 {
-  "name": "haydarpasa.github.io",
+  "name": "hyptskdashboard.github.io",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://haydarpasa.github.io/",
+  "homepage": "https://hyptskdashboard.github.io/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

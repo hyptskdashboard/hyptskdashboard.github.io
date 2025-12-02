@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
-import { motion, AnimatePresence, useMotionValue, type PanInfo } from 'framer-motion';
+import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import MenuCard from './MenuCard';
 import type { DailyMenu } from '../types';
 
@@ -13,7 +13,6 @@ interface MenuCarouselProps {
 const MenuCarousel: React.FC<MenuCarouselProps> = ({ menus, initialIndex = 0 }) => {
     const [activeIndex, setActiveIndex] = useState(initialIndex);
     const [direction, setDirection] = useState(0);
-    const dragX = useMotionValue(0);
 
     const handleNext = () => {
         setDirection(1);
@@ -86,7 +85,7 @@ const MenuCarousel: React.FC<MenuCarouselProps> = ({ menus, initialIndex = 0 }) 
                 width: '100%',
                 position: 'relative',
                 perspective: '1500px',
-                overflow: 'hidden',
+                overflow: 'visible',
                 touchAction: 'pan-y pinch-zoom'
             }}
         >
@@ -143,8 +142,9 @@ const MenuCarousel: React.FC<MenuCarouselProps> = ({ menus, initialIndex = 0 }) 
                     justifyContent: 'center',
                     position: 'relative',
                     width: '100%',
-                    minHeight: { xs: 600, sm: 700 },
-                    px: { xs: 1, sm: 2 }
+                    maxWidth: 320,
+                    minHeight: { xs: 440, sm: 540 },
+                    px: { xs: 1, sm: 2 },
                 }}
             >
                 {/* Previous Card (Peek) - Hidden on mobile */}
@@ -172,15 +172,13 @@ const MenuCarousel: React.FC<MenuCarouselProps> = ({ menus, initialIndex = 0 }) 
                         drag="x"
                         dragConstraints={{ left: 0, right: 0 }}
                         dragElastic={0.2}
+                        dragSnapToOrigin
                         onDragEnd={handleDragEnd}
                         transition={{
                             x: { type: "spring", stiffness: 300, damping: 30 },
                             opacity: { duration: 0.3 }
                         }}
                         style={{
-                            position: 'absolute',
-                            zIndex: 1,
-                            x: dragX,
                             cursor: 'grab'
                         }}
                         whileTap={{ cursor: 'grabbing' }}

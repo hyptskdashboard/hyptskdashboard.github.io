@@ -145,6 +145,7 @@ const MenuCarousel: React.FC<MenuCarouselProps> = ({ menus, initialIndex = 0 }) 
                     maxWidth: 320,
                     minHeight: { xs: 440, sm: 540 },
                     px: { xs: 1, sm: 2 },
+                    mx: 'auto'
                 }}
             >
                 {/* Previous Card (Peek) - Hidden on mobile */}

@@ -88,6 +88,8 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                     flexDirection: 'column',
                     p: 0,
                     overflowY: 'auto',
+                    WebkitOverflowScrolling: 'touch',
+                    overscrollBehavior: 'contain',
                     '&::-webkit-scrollbar': {
                         width: '6px',
                     },

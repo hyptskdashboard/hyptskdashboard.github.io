@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -11,10 +11,14 @@ import {
     ListItemIcon,
     ListItemText,
     Chip,
-    CircularProgress
+    CircularProgress,
+    Tooltip,
+    Button
 } from '@mui/material';
-import { Close, InsertDriveFile, CalendarToday } from '@mui/icons-material';
+import { Close, InsertDriveFile, CalendarToday, DeleteForever, Add } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
+import { loadPDFData, parseMenuData } from '../utils/pdfParser';
+import type { DailyMenu } from '../types';
 
 interface FileManagementModalProps {
     open: boolean;
@@ -23,6 +27,8 @@ interface FileManagementModalProps {
 
 interface FileInfo {
     name: string;
+    pathname: string;
+    url: string;
     date: string;
     size: string;
     type: string;
@@ -31,6 +37,9 @@ interface FileInfo {
 const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose }) => {
     const [files, setFiles] = useState<FileInfo[]>([]);
     const [loading, setLoading] = useState(true);
+    const [uploading, setUploading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const formatFileSize = (bytes: number) => {
         if (bytes === 0) return '0 Bytes';
@@ -52,38 +61,129 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
         }).format(date);
     };
 
+    const fetchFiles = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const res = await fetch('/api/files');
+            if (!res.ok) {
+                throw new Error('Dosya listesi alınamadı');
+            }
+            const data = await res.json() as { name: string; pathname: string; url: string; uploadedAt: string; size: number }[];
+            const mapped: FileInfo[] = data.map((b) => ({
+                name: b.name,
+                pathname: b.pathname,
+                url: b.url,
+                size: formatFileSize(b.size),
+                date: formatDate(b.uploadedAt),
+                type: 'PDF Dosyası'
+            }));
+            setFiles(mapped);
+        } catch (e) {
+            console.error(e);
+            setFiles([]);
+            setError('Dosyalar yüklenirken bir hata oluştu.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (open) {
-            const fetchFileMetadata = async () => {
-                setLoading(true);
-                const fileNames = ['sabah_aralik.pdf', 'aksam_aralik.pdf'];
-                const fileData: FileInfo[] = [];
-
-                for (const name of fileNames) {
-                    try {
-                        const response = await fetch(`/files/${name}`, { method: 'HEAD' });
-                        if (response.ok) {
-                            const size = parseInt(response.headers.get('Content-Length') || '0', 10);
-                            const lastModified = response.headers.get('Last-Modified');
-
-                            fileData.push({
-                                name: name,
-                                size: formatFileSize(size),
-                                date: formatDate(lastModified),
-                                type: 'PDF Dosyası'
-                            });
-                        }
-                    } catch (error) {
-                        console.error(`Error fetching metadata for ${name}`, error);
-                    }
-                }
-                setFiles(fileData);
-                setLoading(false);
-            };
-
-            fetchFileMetadata();
+            fetchFiles();
         }
     }, [open]);
+
+    const validatePdfStructure = async (file: File): Promise<boolean> => {
+        try {
+            const lowerName = file.name.toLowerCase();
+            const isBreakfast = lowerName.startsWith('sabah_');
+            const isDinner = lowerName.startsWith('aksam_');
+            if (!isBreakfast && !isDinner) return false;
+
+            const buffer = await file.arrayBuffer();
+            const pages = await loadPDFData(new Uint8Array(buffer));
+            if (!pages.length) return false;
+
+            const menus: DailyMenu[] = parseMenuData(pages, isBreakfast ? 'breakfast' : 'dinner');
+            return menus.length > 0;
+        } catch (e) {
+            console.error('PDF doğrulama hatası', e);
+            return false;
+        }
+    };
+
+    const handleDelete = async (file: FileInfo) => {
+        if (!confirm(`Bu dosyayı silmek istediğine emin misin?\n${file.name}`)) return;
+        try {
+            setLoading(true);
+            setError(null);
+            const res = await fetch(`/api/files?pathname=${encodeURIComponent(file.pathname)}`, {
+                method: 'DELETE'
+            });
+            if (!res.ok) {
+                throw new Error('Silme işlemi başarısız oldu');
+            }
+            await fetchFiles();
+        } catch (e) {
+            console.error(e);
+            setError('Dosya silinirken bir hata oluştu.');
+            setLoading(false);
+        }
+    };
+
+    const handleAddClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        try {
+            setUploading(true);
+            setError(null);
+
+            if (!file.type.includes('pdf')) {
+                setError('Sadece PDF dosyaları yüklenebilir.');
+                return;
+            }
+
+            const lowerName = file.name.toLowerCase();
+            const nameRegex = /^(sabah|aksam)_[a-zçğıöşü]+\.pdf$/i;
+            if (!nameRegex.test(lowerName)) {
+                setError('Dosya ismi sabah_ayadi veya aksam_ayadi formatında olmalı (örn. sabah_aralik.pdf).');
+                return;
+            }
+
+            const isValid = await validatePdfStructure(file);
+            if (!isValid) {
+                setError('PDF içeriği beklenen menü formatında değil.');
+                return;
+            }
+
+            const res = await fetch(`/api/files?name=${encodeURIComponent(lowerName)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/pdf'
+                },
+                body: file
+            });
+
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(text || 'Yükleme başarısız');
+            }
+
+            await fetchFiles();
+        } catch (e) {
+            console.error(e);
+            setError('Dosya yüklenirken bir hata oluştu.');
+        } finally {
+            setUploading(false);
+            if (event.target) event.target.value = '';
+        }
+    };
 
     return (
         <AnimatePresence>
@@ -127,21 +227,58 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                         >
                             Yüklü Menü Dosyaları
                         </Typography>
-                        <IconButton
-                            onClick={onClose}
-                            sx={{
-                                color: 'rgba(255,255,255,0.7)',
-                                '&:hover': {
-                                    background: 'rgba(255,255,255,0.1)',
-                                    color: 'white'
-                                }
-                            }}
-                        >
-                            <Close />
-                        </IconButton>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                            <Tooltip title="PDF Ekle">
+                                <span>
+                                    <Button
+                                        variant="outlined"
+                                        size="small"
+                                        startIcon={<Add />}
+                                        onClick={handleAddClick}
+                                        disabled={uploading || loading}
+                                        sx={{
+                                            borderColor: 'rgba(255,255,255,0.2)',
+                                            color: 'rgba(255,255,255,0.9)',
+                                            textTransform: 'none',
+                                            fontSize: '0.8rem',
+                                            '&:hover': {
+                                                borderColor: 'rgba(255,255,255,0.4)',
+                                                background: 'rgba(255,255,255,0.08)'
+                                            }
+                                        }}
+                                    >
+                                        PDF Ekle
+                                    </Button>
+                                </span>
+                            </Tooltip>
+                            <IconButton
+                                onClick={onClose}
+                                sx={{
+                                    color: 'rgba(255,255,255,0.7)',
+                                    '&:hover': {
+                                        background: 'rgba(255,255,255,0.1)',
+                                        color: 'white'
+                                    }
+                                }}
+                            >
+                                <Close />
+                            </IconButton>
+                        </Box>
                     </DialogTitle>
 
                     <DialogContent sx={{ pt: 3, pb: 4 }}>
+                        <input
+                            type="file"
+                            accept="application/pdf"
+                            ref={fileInputRef}
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                        />
+                        {error && (
+                            <Typography sx={{ color: '#f97373', mb: 2, fontSize: '0.8rem' }}>
+                                {error}
+                            </Typography>
+                        )}
                         {loading ? (
                             <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
                                 <CircularProgress sx={{ color: '#00f2ff' }} />
@@ -168,6 +305,22 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                                                         transform: 'translateX(4px)'
                                                     }
                                                 }}
+                                                secondaryAction={
+                                                    <Tooltip title="Sil">
+                                                        <IconButton
+                                                            edge="end"
+                                                            onClick={() => handleDelete(file)}
+                                                            sx={{
+                                                                color: '#ef5350',
+                                                                '&:hover': {
+                                                                    background: 'rgba(239,83,80,0.15)'
+                                                                }
+                                                            }}
+                                                        >
+                                                            <DeleteForever />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                }
                                             >
                                                 <ListItemIcon>
                                                     <Box

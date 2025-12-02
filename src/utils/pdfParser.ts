@@ -14,9 +14,8 @@ interface TextItem {
     h: number; // height
 }
 
-export const loadPDF = async (url: string): Promise<TextItem[][]> => {
+const extractTextItemsFromPdf = async (loadingTask: any): Promise<TextItem[][]> => {
     try {
-        const loadingTask = pdfjsLib.getDocument(url);
         const pdf = await loadingTask.promise;
         const numPages = pdf.numPages;
         const allPagesItems: TextItem[][] = [];
@@ -37,7 +36,27 @@ export const loadPDF = async (url: string): Promise<TextItem[][]> => {
 
         return allPagesItems;
     } catch (error) {
+        console.error('Error extracting text from PDF:', error);
+        return [];
+    }
+};
+
+export const loadPDF = async (url: string): Promise<TextItem[][]> => {
+    try {
+        const loadingTask = pdfjsLib.getDocument(url);
+        return await extractTextItemsFromPdf(loadingTask);
+    } catch (error) {
         console.error(`Error loading PDF from ${url}:`, error);
+        return [];
+    }
+};
+
+export const loadPDFData = async (data: Uint8Array): Promise<TextItem[][]> => {
+    try {
+        const loadingTask = pdfjsLib.getDocument({ data });
+        return await extractTextItemsFromPdf(loadingTask);
+    } catch (error) {
+        console.error('Error loading PDF from data buffer:', error);
         return [];
     }
 };

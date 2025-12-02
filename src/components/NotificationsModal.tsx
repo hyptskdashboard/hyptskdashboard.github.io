@@ -9,15 +9,17 @@ import {
     Chip,
     List,
     ListItem,
-    ListItemText
+    ListItemText,
+    Tooltip
 } from '@mui/material';
-import { Close, NotificationsActive } from '@mui/icons-material';
+import { Close, NotificationsActive, Add } from '@mui/icons-material';
 import type { NotificationItem } from '../types';
 
 interface NotificationsModalProps {
     open: boolean;
     onClose: () => void;
     notifications: NotificationItem[];
+    onAddNotification?: () => void;
 }
 
 const formatDateTime = (iso?: string) => {
@@ -33,7 +35,7 @@ const formatDateTime = (iso?: string) => {
     }).format(d);
 };
 
-const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, notifications }) => {
+const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, notifications, onAddNotification }) => {
     return (
         <Dialog
             open={open}
@@ -78,18 +80,36 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, 
                         Bildirimler
                     </Typography>
                 </Box>
-                <IconButton
-                    onClick={onClose}
-                    sx={{
-                        color: 'rgba(255,255,255,0.7)',
-                        '&:hover': {
-                            background: 'rgba(255,255,255,0.1)',
-                            color: 'white'
-                        }
-                    }}
-                >
-                    <Close />
-                </IconButton>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {onAddNotification && (
+                        <Tooltip title="Yeni bildirim ekle">
+                            <IconButton
+                                onClick={onAddNotification}
+                                sx={{
+                                    color: 'rgba(0,217,255,0.9)',
+                                    '&:hover': {
+                                        background: 'rgba(0,217,255,0.15)',
+                                        color: '#00D9FF'
+                                    }
+                                }}
+                            >
+                                <Add />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                    <IconButton
+                        onClick={onClose}
+                        sx={{
+                            color: 'rgba(255,255,255,0.7)',
+                            '&:hover': {
+                                background: 'rgba(255,255,255,0.1)',
+                                color: 'white'
+                            }
+                        }}
+                    >
+                        <Close />
+                    </IconButton>
+                </Box>
             </DialogTitle>
 
             <DialogContent

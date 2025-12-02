@@ -17,8 +17,45 @@ function App() {
   useEffect(() => {
     const fetchMenus = async () => {
       try {
-        const sabahUrl = '/files/sabah_aralik.pdf';
-        const aksamUrl = '/files/aksam_aralik.pdf';
+        const resolveMenuUrls = async (): Promise<{ sabahUrl: string; aksamUrl: string }> => {
+          const res = await fetch('/api/files');
+          if (!res.ok) {
+            throw new Error('PDF dosya listesi alınamadı.');
+          }
+
+          const data = (await res.json()) as {
+            name: string;
+            pathname: string;
+            url: string;
+            uploadedAt: string;
+            size: number;
+          }[];
+
+          const pickLatest = (prefix: string) => {
+            const filtered = data.filter((f) => f.name.toLowerCase().startsWith(prefix));
+            if (filtered.length === 0) return undefined;
+            return filtered
+              .slice()
+              .sort(
+                (a, b) =>
+                  new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
+              )[0].url;
+          };
+
+          const sabahFromBlob = pickLatest('sabah_');
+          const aksamFromBlob = pickLatest('aksam_');
+
+          if (!sabahFromBlob || !aksamFromBlob) {
+            throw new Error('Vercel Blob içinde sabah_*/aksam_* PDF dosyaları bulunamadı.');
+          }
+
+          return {
+            sabahUrl: sabahFromBlob,
+            aksamUrl: aksamFromBlob,
+          };
+        };
+
+        const { sabahUrl, aksamUrl } = await resolveMenuUrls();
 
         const [sabahItems, aksamItems] = await Promise.all([
           loadPDF(sabahUrl),
@@ -48,6 +85,7 @@ function App() {
         setMenus(merged);
       } catch (error) {
         console.error('Failed to load menus:', error);
+        setMenus([]);
       } finally {
         setLoading(false);
       }
@@ -59,7 +97,7 @@ function App() {
   useEffect(() => {
     const loadNotifications = async () => {
       try {
-        const res = await fetch('/notifications.json');
+        const res = await fetch('/api/notifications');
         if (!res.ok) return;
         const data = (await res.json()) as NotificationItem[];
         const now = new Date();

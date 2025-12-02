@@ -9,7 +9,7 @@ import {
     Divider,
     Chip
 } from '@mui/material';
-import { Close, Restaurant, Wifi, AccessTime } from '@mui/icons-material';
+import { Close, Restaurant, Wifi, AccessTime, LocalLaundryService } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface InfoModalProps {
@@ -176,7 +176,8 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                                     fontWeight: 700,
                                                     color: meal.color,
                                                     fontFamily: 'monospace',
-                                                    fontSize: '0.95rem'
+                                                    fontSize: { xs: '0.85rem', sm: '0.95rem' },
+                                                    whiteSpace: 'nowrap'
                                                 }}
                                             >
                                                 {meal.time}
@@ -350,30 +351,42 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         sx={{
                                             p: 2,
                                             borderRadius: 2,
-                                            background: 'rgba(255, 152, 0, 0.05)',
+                                            background: 'rgba(255, 152, 0, 0.08)',
                                             backdropFilter: 'blur(5px)',
-                                            border: '1px solid rgba(255, 152, 0, 0.15)',
+                                            border: '1px solid rgba(255, 152, 0, 0.3)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            transition: 'all 0.2s',
+                                            '&:hover': {
+                                                background: 'rgba(255, 152, 0, 0.15)',
+                                                transform: 'translateX(4px)'
+                                            }
                                         }}
                                     >
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                                            <AccessTime sx={{ fontSize: 18, color: '#FFB74D' }} />
+                                            <Typography
+                                                variant="body1"
+                                                sx={{
+                                                    fontWeight: 500,
+                                                    fontSize: '0.95rem'
+                                                }}
+                                            >
+                                                Hafta İçi
+                                            </Typography>
+                                        </Box>
                                         <Typography
-                                            variant="body2"
+                                            variant="body1"
                                             sx={{
                                                 fontWeight: 700,
                                                 color: '#FF9800',
-                                                mb: 0.5,
-                                                fontSize: '0.85rem'
+                                                fontFamily: 'monospace',
+                                                fontSize: { xs: '0.85rem', sm: '0.95rem' },
+                                                whiteSpace: 'nowrap'
                                             }}
                                         >
-                                            Hafta İçi
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                color: 'rgba(255,255,255,0.7)',
-                                                fontSize: '0.85rem'
-                                            }}
-                                        >
-                                            Sabah 06:00 - Gece 00:00 (24:00)
+                                            06:00 - 24:00
                                         </Typography>
                                     </Box>
                                 </motion.div>
@@ -388,36 +401,49 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         sx={{
                                             p: 2,
                                             borderRadius: 2,
-                                            background: 'rgba(255, 152, 0, 0.05)',
+                                            background: 'rgba(255, 152, 0, 0.08)',
                                             backdropFilter: 'blur(5px)',
-                                            border: '1px solid rgba(255, 152, 0, 0.15)',
+                                            border: '1px solid rgba(255, 152, 0, 0.3)',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: 0.75,
+                                            transition: 'all 0.2s',
+                                            '&:hover': {
+                                                background: 'rgba(255, 152, 0, 0.15)',
+                                                transform: 'translateX(4px)'
+                                            }
                                         }}
                                     >
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                fontWeight: 700,
-                                                color: '#FF9800',
-                                                mb: 0.5,
-                                                fontSize: '0.85rem'
-                                            }}
-                                        >
-                                            Hafta Sonu
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                color: 'rgba(255,255,255,0.7)',
-                                                fontSize: '0.85rem',
-                                                mb: 0.5
-                                            }}
-                                        >
-                                            Sabah 06:00 - Gece 01:00
-                                        </Typography>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, justifyContent: 'space-between' }}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                                                <AccessTime sx={{ fontSize: 18, color: '#FFB74D' }} />
+                                                <Typography
+                                                    variant="body1"
+                                                    sx={{
+                                                        fontWeight: 500,
+                                                        fontSize: '0.95rem'
+                                                    }}
+                                                >
+                                                    Hafta Sonu
+                                                </Typography>
+                                            </Box>
+                                            <Typography
+                                                variant="body1"
+                                                sx={{
+                                                    fontWeight: 700,
+                                                    color: '#FF9800',
+                                                    fontFamily: 'monospace',
+                                                    fontSize: { xs: '0.85rem', sm: '0.95rem' },
+                                                    whiteSpace: 'nowrap'
+                                                }}
+                                            >
+                                                06:00 - 01:00
+                                            </Typography>
+                                        </Box>
                                         <Typography
                                             variant="caption"
                                             sx={{
-                                                color: 'rgba(255,255,255,0.5)',
+                                                color: 'rgba(255,255,255,0.6)',
                                                 fontSize: '0.75rem',
                                                 fontStyle: 'italic'
                                             }}
@@ -458,27 +484,38 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         sx={{
                                             p: 2,
                                             borderRadius: 2,
-                                            background: 'rgba(179, 136, 255, 0.05)',
+                                            background: 'rgba(179, 136, 255, 0.08)',
                                             backdropFilter: 'blur(5px)',
-                                            border: '1px solid rgba(179, 136, 255, 0.15)',
+                                            border: '1px solid rgba(179, 136, 255, 0.35)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            transition: 'all 0.2s',
+                                            '&:hover': {
+                                                background: 'rgba(179, 136, 255, 0.15)',
+                                                transform: 'translateX(4px)'
+                                            }
                                         }}
                                     >
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                                            <LocalLaundryService sx={{ fontSize: 18, color: '#b388ff' }} />
+                                            <Typography
+                                                variant="body1"
+                                                sx={{
+                                                    fontWeight: 500,
+                                                    fontSize: '0.95rem'
+                                                }}
+                                            >
+                                                Erkek Bireysel Yıkama
+                                            </Typography>
+                                        </Box>
                                         <Typography
                                             variant="body2"
                                             sx={{
-                                                fontWeight: 700,
                                                 color: '#b388ff',
-                                                mb: 0.5,
-                                                fontSize: '0.85rem'
-                                            }}
-                                        >
-                                            Erkek Bireysel Yıkama
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                color: 'rgba(255,255,255,0.7)',
-                                                fontSize: '0.85rem'
+                                                fontWeight: 600,
+                                                fontSize: { xs: '0.8rem', sm: '0.85rem' },
+                                                whiteSpace: 'nowrap'
                                             }}
                                         >
                                             Salı • Perşembe • Cumartesi
@@ -496,27 +533,38 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         sx={{
                                             p: 2,
                                             borderRadius: 2,
-                                            background: 'rgba(179, 136, 255, 0.05)',
+                                            background: 'rgba(179, 136, 255, 0.08)',
                                             backdropFilter: 'blur(5px)',
-                                            border: '1px solid rgba(179, 136, 255, 0.15)',
+                                            border: '1px solid rgba(179, 136, 255, 0.35)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            transition: 'all 0.2s',
+                                            '&:hover': {
+                                                background: 'rgba(179, 136, 255, 0.15)',
+                                                transform: 'translateX(4px)'
+                                            }
                                         }}
                                     >
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                                            <LocalLaundryService sx={{ fontSize: 18, color: '#b388ff' }} />
+                                            <Typography
+                                                variant="body1"
+                                                sx={{
+                                                    fontWeight: 500,
+                                                    fontSize: '0.95rem'
+                                                }}
+                                            >
+                                                Kız Bireysel Yıkama
+                                            </Typography>
+                                        </Box>
                                         <Typography
                                             variant="body2"
                                             sx={{
-                                                fontWeight: 700,
                                                 color: '#b388ff',
-                                                mb: 0.5,
-                                                fontSize: '0.85rem'
-                                            }}
-                                        >
-                                            Kız Bireysel Yıkama
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                color: 'rgba(255,255,255,0.7)',
-                                                fontSize: '0.85rem'
+                                                fontWeight: 600,
+                                                fontSize: { xs: '0.8rem', sm: '0.85rem' },
+                                                whiteSpace: 'nowrap'
                                             }}
                                         >
                                             Pazartesi • Çarşamba • Cuma
@@ -534,9 +582,14 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         sx={{
                                             p: 2,
                                             borderRadius: 2,
-                                            background: 'rgba(179, 136, 255, 0.05)',
+                                            background: 'rgba(179, 136, 255, 0.08)',
                                             backdropFilter: 'blur(5px)',
-                                            border: '1px solid rgba(179, 136, 255, 0.15)',
+                                            border: '1px solid rgba(179, 136, 255, 0.35)',
+                                            transition: 'all 0.2s',
+                                            '&:hover': {
+                                                background: 'rgba(179, 136, 255, 0.15)',
+                                                transform: 'translateX(4px)'
+                                            }
                                         }}
                                     >
                                         <Typography
@@ -563,7 +616,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         <Typography
                                             variant="caption"
                                             sx={{
-                                                color: 'rgba(255,255,255,0.5)',
+                                                color: 'rgba(255,255,255,0.6)',
                                                 fontSize: '0.75rem',
                                                 fontStyle: 'italic'
                                             }}

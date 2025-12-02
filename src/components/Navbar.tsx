@@ -5,12 +5,14 @@ import InfoModal from './InfoModal';
 import FileManagementModal from './FileManagementModal';
 import NotificationsModal from './NotificationsModal';
 import type { NotificationItem } from '../types';
+import { filterActiveNotifications, getReadNotificationIds, markNotificationsRead } from '../utils/notifications';
 
 const Navbar: React.FC = () => {
     const [infoOpen, setInfoOpen] = useState(false);
     const [filesOpen, setFilesOpen] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+    const [unreadCount, setUnreadCount] = useState(0);
 
     useEffect(() => {
         const loadNotifications = async () => {
@@ -19,6 +21,12 @@ const Navbar: React.FC = () => {
                 if (!res.ok) return;
                 const data = (await res.json()) as NotificationItem[];
                 setNotifications(data);
+
+                const now = new Date();
+                const active = filterActiveNotifications(data, now);
+                const readIds = new Set(getReadNotificationIds());
+                const unreadActive = active.filter(n => !readIds.has(n.id));
+                setUnreadCount(unreadActive.length);
             } catch (e) {
                 console.error('Bildirimler yüklenemedi', e);
             }
@@ -83,7 +91,7 @@ const Navbar: React.FC = () => {
                         >
                             <Badge
                                 color="error"
-                                variant={notifications.length > 0 ? 'dot' : 'standard'}
+                                badgeContent={unreadCount > 0 ? unreadCount : undefined}
                                 overlap="circular"
                             >
                                 <NotificationsNone />
@@ -139,7 +147,13 @@ const Navbar: React.FC = () => {
             <FileManagementModal open={filesOpen} onClose={() => setFilesOpen(false)} />
             <NotificationsModal
                 open={notificationsOpen}
-                onClose={() => setNotificationsOpen(false)}
+                onClose={() => {
+                    setNotificationsOpen(false);
+                    if (notifications.length) {
+                        markNotificationsRead(notifications.map(n => n.id));
+                        setUnreadCount(0);
+                    }
+                }}
                 notifications={notifications}
             />
         </>

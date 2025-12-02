@@ -5,12 +5,13 @@ import Navbar from './components/Navbar';
 import MenuCarousel from './components/MenuCarousel';
 import { loadPDF, parseMenuData, mergeMenus } from './utils/pdfParser';
 import type { DailyMenu, NotificationItem } from './types';
+import { filterActiveNotifications, getReadNotificationIds, markNotificationsRead } from './utils/notifications';
 
 function App() {
   const [menus, setMenus] = useState<DailyMenu[]>([]);
   const [loading, setLoading] = useState(true);
   const [initialIndex, setInitialIndex] = useState(0);
-  const [activeNotification, setActiveNotification] = useState<NotificationItem | null>(null);
+  const [notificationQueue, setNotificationQueue] = useState<NotificationItem[]>([]);
   const [notificationOpen, setNotificationOpen] = useState(false);
 
   useEffect(() => {
@@ -62,15 +63,15 @@ function App() {
         if (!res.ok) return;
         const data = (await res.json()) as NotificationItem[];
         const now = new Date();
-        const active = data.filter(n => {
-          const startOk = !n.startAt || new Date(n.startAt) <= now;
-          const endOk = !n.endAt || new Date(n.endAt) >= now;
-          return startOk && endOk;
-        });
-        if (active.length > 0) {
-          // En son ekleneni göster
-          const latest = [...active].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
-          setActiveNotification(latest);
+        const active = filterActiveNotifications(data, now);
+        const readIds = new Set(getReadNotificationIds());
+        const unreadActive = active.filter(n => !readIds.has(n.id));
+        if (unreadActive.length > 0) {
+          // En son eklenenden en eskiye doğru sırala
+          const sorted = [...unreadActive].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          setNotificationQueue(sorted);
           setNotificationOpen(true);
         }
       } catch (e) {
@@ -79,6 +80,21 @@ function App() {
     };
     loadNotifications();
   }, []);
+
+  const handleDismissNotification = () => {
+    setNotificationQueue(prev => {
+      if (prev.length === 0) {
+        setNotificationOpen(false);
+        return prev;
+      }
+      const [current, ...rest] = prev;
+      markNotificationsRead([current.id]);
+      if (rest.length === 0) {
+        setNotificationOpen(false);
+      }
+      return rest;
+    });
+  };
 
   return (
     <>
@@ -153,10 +169,10 @@ function App() {
         </Box>
       </Container>
 
-      {activeNotification && (
+      {notificationQueue.length > 0 && (
         <Dialog
           open={notificationOpen}
-          onClose={() => setNotificationOpen(false)}
+          onClose={handleDismissNotification}
           maxWidth="sm"
           fullWidth
           PaperProps={{
@@ -188,7 +204,7 @@ function App() {
                   variant="h6"
                   sx={{ fontWeight: 700, fontFamily: '"Outfit", sans-serif' }}
                 >
-                  {activeNotification.title}
+                  {notificationQueue[0].title}
                 </Typography>
                 <Box
                   sx={{
@@ -217,13 +233,13 @@ function App() {
                       hour: '2-digit',
                       minute: '2-digit',
                       timeZone: 'Europe/Istanbul'
-                    }).format(new Date(activeNotification.createdAt))}
+                    }).format(new Date(notificationQueue[0].createdAt))}
                   </Typography>
                 </Box>
               </Box>
             </Box>
             <IconButton
-              onClick={() => setNotificationOpen(false)}
+              onClick={handleDismissNotification}
               sx={{
                 color: 'rgba(255,255,255,0.7)',
                 '&:hover': {
@@ -244,7 +260,7 @@ function App() {
                 lineHeight: 1.6
               }}
             >
-              {activeNotification.message}
+              {notificationQueue[0].message}
             </Typography>
           </DialogContent>
         </Dialog>

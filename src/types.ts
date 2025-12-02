@@ -10,3 +10,12 @@ export interface DailyMenu {
     date: Date; // JS Date object for sorting/finding
     menu: MenuData;
 }
+
+export interface NotificationItem {
+    id: string;
+    title: string;
+    message: string;
+    startAt?: string; // ISO date string (optional)
+    endAt?: string;   // ISO date string; controls popup visibility
+    createdAt: string;
+}

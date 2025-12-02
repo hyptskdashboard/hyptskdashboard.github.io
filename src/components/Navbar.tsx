@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Box } from '@mui/material';
-import { InfoOutlined, FolderOpen } from '@mui/icons-material';
+import React, { useEffect, useState } from 'react';
+import { AppBar, Toolbar, Typography, IconButton, Box, Badge } from '@mui/material';
+import { InfoOutlined, FolderOpen, NotificationsNone } from '@mui/icons-material';
 import InfoModal from './InfoModal';
 import FileManagementModal from './FileManagementModal';
+import NotificationsModal from './NotificationsModal';
+import type { NotificationItem } from '../types';
 
 const Navbar: React.FC = () => {
     const [infoOpen, setInfoOpen] = useState(false);
     const [filesOpen, setFilesOpen] = useState(false);
+    const [notificationsOpen, setNotificationsOpen] = useState(false);
+    const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+
+    useEffect(() => {
+        const loadNotifications = async () => {
+            try {
+                const res = await fetch('/notifications.json');
+                if (!res.ok) return;
+                const data = (await res.json()) as NotificationItem[];
+                setNotifications(data);
+            } catch (e) {
+                console.error('Bildirimler yüklenemedi', e);
+            }
+        };
+        loadNotifications();
+    }, []);
 
     return (
         <>
@@ -46,6 +64,32 @@ const Navbar: React.FC = () => {
                     </Box>
 
                     <Box sx={{ display: 'flex', gap: 0.75 }}>
+                        <IconButton
+                            onClick={() => setNotificationsOpen(true)}
+                            sx={{
+                                color: 'rgba(255,255,255,0.9)',
+                                background: 'rgba(255,255,255,0.05)',
+                                backdropFilter: 'blur(5px)',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                width: { xs: 36, sm: 40 },
+                                height: { xs: 36, sm: 40 },
+                                '& svg': { fontSize: { xs: 18, sm: 20 } },
+                                '&:hover': {
+                                    background: 'rgba(255,255,255,0.1)',
+                                    border: '1px solid rgba(255,255,255,0.2)',
+                                },
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            <Badge
+                                color="error"
+                                variant={notifications.length > 0 ? 'dot' : 'standard'}
+                                overlap="circular"
+                            >
+                                <NotificationsNone />
+                            </Badge>
+                        </IconButton>
+
                         <IconButton
                             onClick={() => setFilesOpen(true)}
                             sx={{
@@ -93,6 +137,11 @@ const Navbar: React.FC = () => {
 
             <InfoModal open={infoOpen} onClose={() => setInfoOpen(false)} />
             <FileManagementModal open={filesOpen} onClose={() => setFilesOpen(false)} />
+            <NotificationsModal
+                open={notificationsOpen}
+                onClose={() => setNotificationsOpen(false)}
+                notifications={notifications}
+            />
         </>
     );
 };

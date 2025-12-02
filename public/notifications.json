@@ -1,0 +1,12 @@
+[
+  {
+    "id": "elevator-maintenance-2025-12-02",
+    "title": "Asansör Bakım Bilgisi",
+    "message": "Erkek tarafındaki sol asansör bakım nedeniyle geçici olarak servis dışıdır.",
+    "startAt": "2025-12-02T00:00:00+03:00",
+    "endAt": "2025-12-02T22:00:00+03:00",
+    "createdAt": "2025-12-02T15:00:00+03:00"
+  }
+]
+
+

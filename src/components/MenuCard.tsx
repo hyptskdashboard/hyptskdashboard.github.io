@@ -27,10 +27,10 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                     minHeight: { xs: 380, sm: 480 },
                     maxHeight: { xs: 520, sm: 640 },
                     borderRadius: 5,
-                    background: 'rgba(255, 255, 255, 0.03)',
+                    background: 'var(--surface-alt)',
                     backdropFilter: 'blur(40px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    border: '1px solid var(--border-soft)',
                     boxShadow: isActive
                         ? `
                             0 8px 32px 0 rgba(0, 0, 0, 0.5),
@@ -39,7 +39,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                             0 24px 48px -24px rgba(179, 136, 255, 0.5)
                           `
                         : '0 4px 16px 0 rgba(0, 0, 0, 0.3)',
-                    color: 'white',
+                    color: 'var(--text-primary)',
                     overflow: 'hidden',
                     display: 'flex',
                     flexDirection: 'column',
@@ -59,21 +59,21 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                 {/* Header */}
                 <Box sx={{
                     p: { xs: 2.5, sm: 3 },
-                    background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
+                    background: 'linear-gradient(180deg, var(--surface-alt) 0%, transparent 100%)',
                     textAlign: 'center',
-                    borderBottom: '1px solid rgba(255,255,255,0.05)'
+                    borderBottom: '1px solid var(--border-soft)'
                 }}>
                     <Typography variant="h5" component="div" sx={{
                         fontWeight: 700,
                         letterSpacing: '-0.5px',
                         fontFamily: '"Outfit", sans-serif',
-                        color: '#fff',
+                        color: 'var(--text-primary)',
                         fontSize: { xs: '1.3rem', sm: '1.5rem' }
                     }}>
                         {menu.day}
                     </Typography>
                     <Typography variant="subtitle2" sx={{
-                        opacity: 0.5,
+                        color: 'var(--text-muted)',
                         letterSpacing: '1.5px',
                         mt: 0.5,
                         fontSize: { xs: '0.65rem', sm: '0.75rem' }
@@ -94,36 +94,39 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                         width: '6px',
                     },
                     '&::-webkit-scrollbar-track': {
-                        background: 'rgba(255,255,255,0.02)',
+                        background: 'var(--scrollbar-track)',
                         borderRadius: '10px',
                         margin: '8px',
                     },
                     '&::-webkit-scrollbar-thumb': {
-                        background: 'rgba(255,255,255,0.15)',
+                        background: 'var(--scrollbar-thumb)',
                         borderRadius: '10px',
                         transition: 'background 0.2s',
                     },
                     '&::-webkit-scrollbar-thumb:hover': {
-                        background: 'rgba(255,255,255,0.25)',
+                        background: 'var(--scrollbar-thumb-hover)',
                     },
                 }}>
 
                     {/* Lunch Section */}
                     <Box sx={{ p: { xs: 2, sm: 2.5 }, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <Chip
-                            icon={<WbSunny sx={{ fontSize: { xs: 14, sm: 16 }, color: '#FFD700 !important' }} />}
+                            icon={<WbSunny sx={{ fontSize: { xs: 14, sm: 16 } }} />}
                             label="SABAH"
                             size="small"
                             sx={{
                                 mb: 1.5,
-                                bgcolor: 'rgba(255, 215, 0, 0.08)',
-                                color: '#FFD700',
+                                bgcolor: 'var(--chip-sabah-bg)',
+                                color: 'var(--chip-sabah-text)',
                                 fontWeight: 700,
-                                border: '1px solid rgba(255, 215, 0, 0.2)',
+                                border: '1px solid var(--chip-sabah-border)',
                                 fontSize: { xs: '0.65rem', sm: '0.75rem' },
                                 letterSpacing: '1px',
                                 backdropFilter: 'blur(10px)',
-                                px: 2
+                                px: 2,
+                                '& .MuiSvgIcon-root': {
+                                    color: 'var(--chip-sabah-text)'
+                                }
                             }}
                         />
                         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 0.8 }}>
@@ -135,11 +138,11 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                                         py: 1,
                                         px: 2,
                                         borderRadius: 2,
-                                        background: 'rgba(255,255,255,0.02)',
+                                        background: 'var(--surface-alt)',
                                         backdropFilter: 'blur(5px)',
                                         transition: 'all 0.2s',
                                         '&:hover': {
-                                            background: 'rgba(255,255,255,0.05)',
+                                            background: 'var(--surface-hover)',
                                             transform: 'translateY(-1px)'
                                         }
                                     }}
@@ -148,7 +151,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                                         variant="body2"
                                         sx={{
                                             fontWeight: 500,
-                                            color: 'rgba(255,255,255,0.95)',
+                                            color: 'var(--text-primary)',
                                             fontSize: { xs: '0.85rem', sm: '0.95rem' },
                                             lineHeight: 1.5
                                         }}
@@ -165,7 +168,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                     </Box>
 
                     <Divider sx={{
-                        borderColor: 'rgba(255,255,255,0.06)',
+                        borderColor: 'var(--border-soft)',
                         width: '85%',
                         alignSelf: 'center',
                         my: 1
@@ -182,7 +185,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                                 bgcolor: 'rgba(179, 136, 255, 0.08)',
                                 color: '#b388ff',
                                 fontWeight: 700,
-                                border: '1px solid rgba(179, 136, 255, 0.2)',
+                                border: '1px solid rgba(179, 136, 255, 0.3)',
                                 fontSize: { xs: '0.65rem', sm: '0.75rem' },
                                 letterSpacing: '1px',
                                 backdropFilter: 'blur(10px)',
@@ -198,11 +201,11 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                                         py: 1,
                                         px: 2,
                                         borderRadius: 2,
-                                        background: 'rgba(255,255,255,0.02)',
+                                        background: 'var(--surface-alt)',
                                         backdropFilter: 'blur(5px)',
                                         transition: 'all 0.2s',
                                         '&:hover': {
-                                            background: 'rgba(255,255,255,0.05)',
+                                            background: 'var(--surface-hover)',
                                             transform: 'translateY(-1px)'
                                         }
                                     }}
@@ -211,7 +214,7 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                                         variant="body2"
                                         sx={{
                                             fontWeight: 500,
-                                            color: 'rgba(255,255,255,0.95)',
+                                            color: 'var(--text-primary)',
                                             fontSize: { xs: '0.85rem', sm: '0.95rem' },
                                             lineHeight: 1.5
                                         }}
@@ -235,9 +238,9 @@ const MenuCard: React.FC<MenuCardProps> = ({ menu, isActive }) => {
                         textAlign: 'center',
                         background: 'rgba(0,0,0,0.15)',
                         backdropFilter: 'blur(10px)',
-                        borderTop: '1px solid rgba(255,255,255,0.05)'
+                        borderTop: '1px solid var(--border-soft)'
                     }}>
-                        <Typography variant="caption" sx={{ opacity: 0.5, fontSize: { xs: '0.7rem', sm: '0.75rem' } }}>
+                        <Typography variant="caption" sx={{ color: 'var(--text-muted)', fontSize: { xs: '0.7rem', sm: '0.75rem' } }}>
                             {menu.calories}
                         </Typography>
                     </Box>

@@ -195,13 +195,13 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                     fullWidth
                     PaperProps={{
                         sx: {
-                            background: 'rgba(30, 30, 30, 0.95)',
+                            background: 'var(--surface-main)',
                             backdropFilter: 'blur(40px) saturate(180%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            border: '1px solid var(--border-soft)',
                             borderRadius: 4,
-                            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
-                            color: 'white',
+                            boxShadow: 'var(--shadow-strong)',
+                            color: 'var(--text-primary)',
                             overflow: 'hidden',
                             m: { xs: 2, sm: 3 }
                         }
@@ -213,8 +213,8 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                             justifyContent: 'space-between',
                             alignItems: 'center',
                             pb: 2,
-                            background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
-                            borderBottom: '1px solid rgba(255,255,255,0.06)'
+                            background: 'linear-gradient(180deg, var(--surface-alt) 0%, transparent 100%)',
+                            borderBottom: '1px solid var(--border-soft)'
                         }}
                     >
                         <Typography
@@ -237,13 +237,13 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                                         onClick={handleAddClick}
                                         disabled={uploading || loading}
                                         sx={{
-                                            borderColor: 'rgba(255,255,255,0.2)',
-                                            color: 'rgba(255,255,255,0.9)',
+                                            borderColor: 'var(--border-soft)',
+                                            color: 'var(--text-primary)',
                                             textTransform: 'none',
                                             fontSize: '0.8rem',
                                             '&:hover': {
-                                                borderColor: 'rgba(255,255,255,0.4)',
-                                                background: 'rgba(255,255,255,0.08)'
+                                                borderColor: 'var(--border-strong)',
+                                                background: 'var(--surface-hover)'
                                             }
                                         }}
                                     >
@@ -254,10 +254,10 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                             <IconButton
                                 onClick={onClose}
                                 sx={{
-                                    color: 'rgba(255,255,255,0.7)',
+                                    color: 'var(--text-secondary)',
                                     '&:hover': {
-                                        background: 'rgba(255,255,255,0.1)',
-                                        color: 'white'
+                                        background: 'var(--surface-hover)',
+                                        color: 'var(--text-primary)'
                                     }
                                 }}
                             >
@@ -295,13 +295,13 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                                         >
                                             <ListItem
                                                 sx={{
-                                                    background: 'rgba(255,255,255,0.03)',
+                                                    background: 'var(--surface-alt)',
                                                     backdropFilter: 'blur(5px)',
-                                                    border: '1px solid rgba(255,255,255,0.05)',
+                                                    border: '1px solid var(--border-soft)',
                                                     borderRadius: 2,
                                                     transition: 'all 0.2s',
                                                     '&:hover': {
-                                                        background: 'rgba(255,255,255,0.05)',
+                                                        background: 'var(--surface-hover)',
                                                         transform: 'translateX(4px)'
                                                     }
                                                 }}
@@ -340,7 +340,7 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                                                 </ListItemIcon>
                                                 <ListItemText
                                                     primary={
-                                                        <Typography variant="body1" sx={{ fontWeight: 600, color: 'white' }}>
+                                                        <Typography variant="body1" sx={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                                                             {file.name}
                                                         </Typography>
                                                     }
@@ -353,15 +353,15 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                                                                     sx={{
                                                                         height: 20,
                                                                         fontSize: '0.7rem',
-                                                                        bgcolor: 'rgba(255,255,255,0.1)',
-                                                                        color: 'rgba(255,255,255,0.7)'
+                                                                        bgcolor: 'var(--surface-hover)',
+                                                                        color: 'var(--text-secondary)'
                                                                     }}
                                                                 />
-                                                                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                                                                <Typography variant="caption" sx={{ color: 'var(--text-muted)' }}>
                                                                     {file.type}
                                                                 </Typography>
                                                             </Box>
-                                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'rgba(255,255,255,0.5)' }}>
+                                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'var(--text-muted)' }}>
                                                                 <CalendarToday sx={{ fontSize: 14 }} />
                                                                 <Typography variant="caption">
                                                                     {file.date}
@@ -374,7 +374,7 @@ const FileManagementModal: React.FC<FileManagementModalProps> = ({ open, onClose
                                         </motion.div>
                                     ))
                                 ) : (
-                                    <Typography sx={{ color: 'rgba(255,255,255,0.5)', textAlign: 'center', py: 4 }}>
+                                    <Typography sx={{ color: 'var(--text-muted)', textAlign: 'center', py: 4 }}>
                                         Hiç dosya bulunamadı.
                                     </Typography>
                                 )}

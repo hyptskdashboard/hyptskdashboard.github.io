@@ -44,13 +44,13 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, 
             fullWidth
             PaperProps={{
                 sx: {
-                    background: 'rgba(30, 30, 30, 0.95)',
+                    background: 'var(--surface-main)',
                     backdropFilter: 'blur(40px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    border: '1px solid var(--border-soft)',
                     borderRadius: 4,
-                    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
-                    color: 'white',
+                    boxShadow: 'var(--shadow-strong)',
+                    color: 'var(--text-primary)',
                     overflow: 'hidden',
                     maxHeight: { xs: '90vh', sm: '80vh' },
                     m: { xs: 1.5, sm: 3 },
@@ -63,8 +63,8 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, 
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     pb: 2,
-                    background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
-                    borderBottom: '1px solid rgba(255,255,255,0.06)'
+                    background: 'linear-gradient(180deg, var(--surface-alt) 0%, transparent 100%)',
+                    borderBottom: '1px solid var(--border-soft)'
                 }}
             >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -86,10 +86,9 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, 
                             <IconButton
                                 onClick={onAddNotification}
                                 sx={{
-                                    color: 'rgba(0,217,255,0.9)',
+                                    color: 'var(--text-primary)',
                                     '&:hover': {
-                                        background: 'rgba(0,217,255,0.15)',
-                                        color: '#00D9FF'
+                                        background: 'var(--icon-btn-hover-bg)'
                                     }
                                 }}
                             >
@@ -100,10 +99,10 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, 
                     <IconButton
                         onClick={onClose}
                         sx={{
-                            color: 'rgba(255,255,255,0.7)',
+                            color: 'var(--text-secondary)',
                             '&:hover': {
-                                background: 'rgba(255,255,255,0.1)',
-                                color: 'white'
+                                background: 'var(--surface-hover)',
+                                color: 'var(--text-primary)'
                             }
                         }}
                     >
@@ -121,21 +120,21 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, 
                         width: '8px',
                     },
                     '&::-webkit-scrollbar-track': {
-                        background: 'rgba(255,255,255,0.02)',
+                        background: 'var(--scrollbar-track)',
                         borderRadius: '10px',
                     },
                     '&::-webkit-scrollbar-thumb': {
-                        background: 'rgba(255,255,255,0.15)',
+                        background: 'var(--scrollbar-thumb)',
                         borderRadius: '10px',
                         transition: 'background 0.2s',
                     },
                     '&::-webkit-scrollbar-thumb:hover': {
-                        background: 'rgba(255,255,255,0.25)',
+                        background: 'var(--scrollbar-thumb-hover)',
                     },
                 }}
             >
                 {notifications.length === 0 ? (
-                    <Typography sx={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', py: 4 }}>
+                    <Typography sx={{ color: 'var(--text-secondary)', textAlign: 'center', py: 4 }}>
                         Şu anda görüntülenecek bildirim yok.
                     </Typography>
                 ) : (
@@ -144,13 +143,13 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, 
                             <ListItem
                                 key={n.id}
                                 sx={{
-                                    background: 'rgba(255,255,255,0.03)',
+                                    background: 'var(--surface-alt)',
                                     backdropFilter: 'blur(5px)',
                                     borderRadius: 2,
-                                    border: '1px solid rgba(255,255,255,0.06)',
+                                    border: '1px solid var(--border-soft)',
                                     transition: 'all 0.2s',
                                     '&:hover': {
-                                        background: 'rgba(255,255,255,0.07)',
+                                        background: 'var(--surface-hover)',
                                         transform: 'translateX(4px)'
                                     }
                                 }}
@@ -172,9 +171,9 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, 
                                                     label={`Eklendi: ${formatDateTime(n.createdAt)}`}
                                                     size="small"
                                                     sx={{
-                                                        bgcolor: 'rgba(0, 217, 255, 0.08)',
-                                                        color: '#00D9FF',
-                                                        border: '1px solid rgba(0, 217, 255, 0.25)',
+                                                        bgcolor: 'var(--surface-hover)',
+                                                        color: 'var(--text-secondary)',
+                                                        border: '1px solid var(--border-soft)',
                                                         fontSize: '0.7rem',
                                                         height: 22,
                                                         alignSelf: 'flex-start'
@@ -187,7 +186,7 @@ const NotificationsModal: React.FC<NotificationsModalProps> = ({ open, onClose, 
                                         <Typography
                                             variant="body2"
                                             sx={{
-                                                color: 'rgba(255,255,255,0.7)',
+                                                color: 'var(--text-secondary)',
                                                 mt: 1,
                                                 fontSize: '0.85rem'
                                             }}

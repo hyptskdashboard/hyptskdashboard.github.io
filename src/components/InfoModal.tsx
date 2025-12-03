@@ -9,7 +9,7 @@ import {
     Divider,
     Chip
 } from '@mui/material';
-import { Close, Restaurant, Wifi, AccessTime, LocalLaundryService } from '@mui/icons-material';
+import { Close, Restaurant, Wifi, AccessTime, LocalLaundryService, Paid, LightbulbOutlined, InfoOutlined } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface InfoModalProps {
@@ -50,12 +50,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                     scroll="paper"
                     PaperProps={{
                         sx: {
-                            background: 'rgba(30, 30, 30, 0.95)',
+                            background: 'var(--surface-main)',
                             backdropFilter: 'blur(40px) saturate(180%)',
                             WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
-                            color: 'white',
+                            border: '1px solid var(--border-soft)',
+                            boxShadow: 'var(--shadow-strong)',
+                            color: 'var(--text-primary)',
                             overflow: 'hidden',
                             maxHeight: { xs: '90vh', sm: '80vh' },
                             m: { xs: 1.5, sm: 3 },
@@ -69,8 +69,8 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                             justifyContent: 'space-between',
                             alignItems: 'center',
                             pb: 2,
-                            background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)',
-                            borderBottom: '1px solid rgba(255,255,255,0.06)'
+                            background: 'linear-gradient(180deg, var(--surface-alt) 0%, transparent 100%)',
+                            borderBottom: '1px solid var(--border-soft)'
                         }}
                     >
                         <Typography
@@ -86,10 +86,10 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                         <IconButton
                             onClick={onClose}
                             sx={{
-                                color: 'rgba(255,255,255,0.7)',
+                                color: 'var(--text-secondary)',
                                 '&:hover': {
-                                    background: 'rgba(255,255,255,0.1)',
-                                    color: 'white'
+                                    background: 'var(--surface-hover)',
+                                    color: 'var(--text-primary)'
                                 }
                             }}
                         >
@@ -105,21 +105,22 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                             width: '8px',
                         },
                         '&::-webkit-scrollbar-track': {
-                            background: 'rgba(255,255,255,0.02)',
+                            background: 'var(--scrollbar-track)',
                             borderRadius: '10px',
                         },
                         '&::-webkit-scrollbar-thumb': {
-                            background: 'rgba(255,255,255,0.15)',
+                            background: 'var(--scrollbar-thumb)',
                             borderRadius: '10px',
                             transition: 'background 0.2s',
                         },
                         '&::-webkit-scrollbar-thumb:hover': {
-                            background: 'rgba(255,255,255,0.25)',
+                            background: 'var(--scrollbar-thumb-hover)',
                         },
                     }}>
                         {/* Meal Times Section */}
                         <Box sx={{ mt: 2.5, mb: 4 }}>
                             <Chip
+                                icon={<Restaurant sx={{ fontSize: 16, color: '#FFD700 !important' }} />}
                                 label="YEMEK SAATLERİ"
                                 size="small"
                                 sx={{
@@ -148,12 +149,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                                 justifyContent: 'space-between',
                                                 p: 2,
                                                 borderRadius: 2,
-                                                background: 'rgba(255,255,255,0.03)',
+                                                background: 'var(--surface-alt)',
                                                 backdropFilter: 'blur(5px)',
-                                                border: '1px solid rgba(255,255,255,0.05)',
+                                                border: '1px solid var(--border-soft)',
                                                 transition: 'all 0.2s',
                                                 '&:hover': {
-                                                    background: 'rgba(255,255,255,0.05)',
+                                                    background: 'var(--surface-hover)',
                                                     transform: 'translateX(4px)'
                                                 }
                                             }}
@@ -188,7 +189,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                             </Box>
                         </Box>
 
-                        <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)', my: 3 }} />
+                        <Divider sx={{ borderColor: 'var(--border-soft)', my: 3 }} />
 
                         {/* Internet Section */}
                         <Box>
@@ -237,7 +238,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         <Typography
                                             variant="body2"
                                             sx={{
-                                                color: 'rgba(255,255,255,0.7)',
+                                                color: 'var(--text-secondary)',
                                                 fontSize: '0.85rem',
                                                 fontFamily: 'monospace'
                                             }}
@@ -270,7 +271,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         <Typography
                                             variant="body2"
                                             sx={{
-                                                color: 'rgba(255,255,255,0.7)',
+                                                color: 'var(--text-secondary)',
                                                 fontSize: '0.85rem',
                                                 mb: 1
                                             }}
@@ -287,7 +288,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         <Typography
                                             variant="caption"
                                             sx={{
-                                                color: 'rgba(255,255,255,0.5)',
+                                                color: 'var(--text-muted)',
                                                 fontSize: '0.75rem',
                                                 fontStyle: 'italic'
                                             }}
@@ -304,17 +305,21 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                             background: 'rgba(0, 217, 255, 0.05)',
                                             backdropFilter: 'blur(5px)',
                                             border: '1px solid rgba(0, 217, 255, 0.15)',
+                                            display: 'flex',
+                                            alignItems: 'flex-start',
+                                            gap: 1.25,
                                         }}
                                     >
+                                        <LightbulbOutlined sx={{ fontSize: 18, color: '#00D9FF' }} />
                                         <Typography
                                             variant="body2"
                                             sx={{
-                                                color: 'rgba(255,255,255,0.7)',
+                                                color: 'var(--text-secondary)',
                                                 lineHeight: 1.7,
                                                 fontSize: '0.85rem'
                                             }}
                                         >
-                                            💡 <strong>İpucu:</strong> En iyi internet deneyimi için <strong>Ethernet</strong> kablosu ile bilgisayarınıza bağlanın.
+                                            <strong>İpucu:</strong> En iyi internet deneyimi için <strong>Ethernet</strong> kablosu ile bilgisayarınıza bağlanın.
                                             Ardından bilgisayardan <strong>mobil hotspot</strong> açarak diğer cihazlarınızı bağlayabilirsiniz.
                                         </Typography>
                                     </Box>
@@ -322,11 +327,108 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                             </motion.div>
                         </Box>
 
-                        <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)', my: 3 }} />
+                        <Divider sx={{ borderColor: 'var(--border-soft)', my: 3 }} />
+
+                        {/* Beslenme & Barınma Yardımı */}
+                        <Box sx={{ mb: 4 }}>
+                            <Chip
+                                icon={<Paid sx={{ fontSize: 16, color: '#22c55e !important' }} />}
+                                label="BESLENME & BARINMA YARDIMI"
+                                size="small"
+                                sx={{
+                                    mb: 2,
+                                    bgcolor: 'rgba(34, 197, 94, 0.12)',
+                                    color: '#22c55e',
+                                    fontWeight: 700,
+                                    fontSize: '0.7rem',
+                                    letterSpacing: '1px',
+                                    border: '1px solid rgba(34, 197, 94, 0.4)'
+                                }}
+                            />
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.25 }}
+                            >
+                                <Box
+                                    sx={{
+                                        p: 2,
+                                        borderRadius: 2,
+                                        background: 'rgba(34, 197, 94, 0.06)',
+                                        backdropFilter: 'blur(6px)',
+                                        border: '1px solid rgba(34, 197, 94, 0.4)',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: 1.25,
+                                    }}
+                                >
+                                    <Typography
+                                        variant="body2"
+                                        sx={{
+                                            color: 'var(--text-secondary)',
+                                            fontSize: '0.9rem',
+                                            lineHeight: 1.7,
+                                        }}
+                                    >
+                                        Gençlik ve Spor Bakanlığınca, yurtlarımızda barınan öğrencilere yapılacak{' '}
+                                        <strong>Beslenme ve Barınma Yardımı</strong>, 2025-2026 eğitim dönemi için:
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                color: '#22c55e',
+                                                fontWeight: 700,
+                                                fontSize: '0.9rem',
+                                            }}
+                                        >
+                                            • Beslenme yardımı: günlük <strong>190,00 TL</strong> (yurtta kalınan her gün için)
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                color: '#22c55e',
+                                                fontWeight: 700,
+                                                fontSize: '0.9rem',
+                                            }}
+                                        >
+                                            • Barınma yardımı: günlük <strong>1.550,00 TL</strong>
+                                        </Typography>
+                                    </Box>
+                                    <Typography
+                                        variant="caption"
+                                        sx={{
+                                            color: 'var(--text-muted)',
+                                            fontSize: '0.8rem',
+                                            lineHeight: 1.7,
+                                        }}
+                                    >
+                                        Beslenme yardımı, yurtta kaldığınız her gün için hesabınıza yatırılır. Barınma yardımı ise
+                                        yurtta kaldığınız gün sayısına bakmaksızın yatırılır. Toplam burs tutarı genellikle ay
+                                        sonuna doğru toplu olarak yatırılır.
+                                    </Typography>
+                                    <Typography
+                                        variant="caption"
+                                        sx={{
+                                            color: '#22c55e',
+                                            fontSize: '0.8rem',
+                                            fontWeight: 700,
+                                            mt: 0.5,
+                                        }}
+                                    >
+                                        1 ay boyunca yurtta kalmanız durumunda alacağınız toplam tutar: <strong>7.250 TL</strong>
+                                    </Typography>
+                                </Box>
+                            </motion.div>
+                        </Box>
+
+                        <Divider sx={{ borderColor: 'var(--border-soft)', my: 3 }} />
 
                         {/* Entry/Exit Hours Section */}
                         <Box sx={{ mb: 4 }}>
                             <Chip
+                                icon={<AccessTime sx={{ fontSize: 16, color: '#FF9800 !important' }} />}
                                 label="GİRİŞ-ÇIKIŞ SAATLERİ"
                                 size="small"
                                 sx={{
@@ -443,7 +545,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         <Typography
                                             variant="caption"
                                             sx={{
-                                                color: 'rgba(255,255,255,0.6)',
+                                                color: 'var(--text-muted)',
                                                 fontSize: '0.75rem',
                                                 fontStyle: 'italic'
                                             }}
@@ -455,11 +557,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                             </Box>
                         </Box>
 
-                        <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)', my: 3 }} />
+                        <Divider sx={{ borderColor: 'var(--border-soft)', my: 3 }} />
 
                         {/* Laundry Section */}
                         <Box>
                             <Chip
+                                icon={<LocalLaundryService sx={{ fontSize: 16, color: '#b388ff !important' }} />}
                                 label="ÇAMAŞIR SAATLERİ"
                                 size="small"
                                 sx={{
@@ -603,28 +706,55 @@ const InfoModal: React.FC<InfoModalProps> = ({ open, onClose }) => {
                                         >
                                             Ablaya Yıkatma
                                         </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            sx={{
-                                                color: 'rgba(255,255,255,0.7)',
-                                                fontSize: '0.85rem',
-                                                mb: 0.5
-                                            }}
-                                        >
-                                            Aynı günler geçerlidir
-                                        </Typography>
-                                        <Typography
-                                            variant="caption"
-                                            sx={{
-                                                color: 'rgba(255,255,255,0.6)',
-                                                fontSize: '0.75rem',
-                                                fontStyle: 'italic'
-                                            }}
-                                        >
-                                            Teslim: 06:00 - 09:00 arası
-                                        </Typography>
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: 0.75, mb: 0.5 }}>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    color: 'var(--text-secondary)',
+                                                    fontSize: '0.85rem',
+                                                }}
+                                            >
+                                                Aynı günler geçerlidir
+                                            </Typography>
+                                            <Typography
+                                                variant="caption"
+                                                sx={{
+                                                    color: 'var(--text-muted)',
+                                                    fontSize: '0.73rem',
+                                                    fontStyle: 'italic'
+                                                }}
+                                            >
+                                                (Teslim: 06:00 - 09:00 arası)
+                                            </Typography>
+                                        </Box>
                                     </Box>
                                 </motion.div>
+                            </Box>
+                            <Box
+                                sx={{
+                                    mt: 1.5,
+                                    p: 1.75,
+                                    borderRadius: 2,
+                                    background: 'rgba(179, 136, 255, 0.08)',
+                                    backdropFilter: 'blur(5px)',
+                                    border: '1px solid rgba(179, 136, 255, 0.35)',
+                                    display: 'flex',
+                                    alignItems: 'flex-start',
+                                    gap: 1.25,
+                                }}
+                            >
+                                <InfoOutlined sx={{ fontSize: 18, color: '#b388ff' }} />
+                                <Typography
+                                    variant="caption"
+                                    sx={{
+                                        color: 'var(--text-secondary)',
+                                        fontSize: '0.78rem',
+                                        lineHeight: 1.6,
+                                    }}
+                                >
+                                    Çamaşır yıkatma için danışmadan <strong>20 TL</strong> karşılığında
+                                    yıkama ve kurutma için ayrı olacak şekilde fiş almanız gerekmektedir.
+                                </Typography>
                             </Box>
                         </Box>
                     </DialogContent>

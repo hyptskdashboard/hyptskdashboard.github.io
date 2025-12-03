@@ -40,7 +40,7 @@ const MenuCarousel: React.FC<MenuCarouselProps> = ({ menus, initialIndex = 0 }) 
 
     if (menus.length === 0) {
         return (
-            <Box sx={{ color: 'white', textAlign: 'center', py: 4 }}>
+            <Box sx={{ color: 'var(--text-primary)', textAlign: 'center', py: 4 }}>
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -96,15 +96,15 @@ const MenuCarousel: React.FC<MenuCarouselProps> = ({ menus, initialIndex = 0 }) 
                     position: 'absolute',
                     left: { xs: 8, sm: 20, md: 40 },
                     zIndex: 20,
-                    color: 'white',
-                    background: 'rgba(255,255,255,0.03)',
+                    color: 'var(--text-primary)',
+                    background: 'var(--icon-btn-bg)',
                     backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: '1px solid var(--icon-btn-border)',
                     width: { xs: 36, sm: 44 },
                     height: { xs: 36, sm: 44 },
                     '&:hover': {
-                        background: 'rgba(255,255,255,0.12)',
-                        border: '1px solid rgba(255,255,255,0.15)',
+                        background: 'var(--icon-btn-hover-bg)',
+                        border: '1px solid var(--border-strong)',
                     },
                     transition: 'all 0.2s'
                 }}
@@ -118,15 +118,15 @@ const MenuCarousel: React.FC<MenuCarouselProps> = ({ menus, initialIndex = 0 }) 
                     position: 'absolute',
                     right: { xs: 8, sm: 20, md: 40 },
                     zIndex: 20,
-                    color: 'white',
-                    background: 'rgba(255,255,255,0.03)',
+                    color: 'var(--text-primary)',
+                    background: 'var(--icon-btn-bg)',
                     backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    border: '1px solid var(--icon-btn-border)',
                     width: { xs: 36, sm: 44 },
                     height: { xs: 36, sm: 44 },
                     '&:hover': {
-                        background: 'rgba(255,255,255,0.12)',
-                        border: '1px solid rgba(255,255,255,0.15)',
+                        background: 'var(--icon-btn-hover-bg)',
+                        border: '1px solid var(--border-strong)',
                     },
                     transition: 'all 0.2s'
                 }}

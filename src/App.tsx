@@ -166,7 +166,7 @@ function App() {
           <Typography
             variant="subtitle2"
             sx={{
-              color: 'rgba(255,255,255,0.4)',
+              color: 'var(--text-muted)',
               letterSpacing: '3px',
               textTransform: 'uppercase',
               fontSize: { xs: '0.65rem', sm: '0.7rem' },
@@ -197,7 +197,7 @@ function App() {
                 size={60}
                 thickness={4}
               />
-              <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+              <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                 Menüler yükleniyor...
               </Typography>
             </Box>
@@ -215,13 +215,13 @@ function App() {
           fullWidth
           PaperProps={{
             sx: {
-              background: 'rgba(30, 30, 30, 0.97)',
+              background: 'var(--surface-main)',
               backdropFilter: 'blur(40px) saturate(180%)',
               WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-              border: '1px solid rgba(0, 217, 255, 0.3)',
+              border: '1px solid var(--modal-border)',
               borderRadius: 4,
-              boxShadow: '0 24px 80px rgba(0, 0, 0, 0.7)',
-              color: 'white',
+              boxShadow: 'var(--shadow-strong)',
+              color: 'var(--text-primary)',
               m: { xs: 1.5, sm: 3 }
             }
           }}
@@ -232,7 +232,7 @@ function App() {
               justifyContent: 'space-between',
               alignItems: 'center',
               pb: 1.5,
-              borderBottom: '1px solid rgba(255,255,255,0.08)'
+              borderBottom: '1px solid var(--border-soft)'
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -251,15 +251,15 @@ function App() {
                     px: 1,
                     py: 0.25,
                     borderRadius: 10,
-                    bgcolor: 'rgba(0, 217, 255, 0.08)',
-                    border: '1px solid rgba(0, 217, 255, 0.25)',
+                  bgcolor: 'var(--surface-hover)',
+                  border: '1px solid var(--border-soft)',
                     alignSelf: 'flex-start'
                   }}
                 >
                   <Typography
                     variant="caption"
                     sx={{
-                      color: '#00D9FF',
+                    color: 'var(--text-secondary)',
                       fontSize: '0.7rem'
                     }}
                   >
@@ -279,10 +279,10 @@ function App() {
             <IconButton
               onClick={handleDismissNotification}
               sx={{
-                color: 'rgba(255,255,255,0.7)',
+              color: 'var(--text-secondary)',
                 '&:hover': {
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'white'
+                background: 'var(--surface-hover)',
+                color: 'var(--text-primary)'
                 }
               }}
             >
@@ -293,7 +293,7 @@ function App() {
             <Typography
               variant="body2"
               sx={{
-                color: 'rgba(255,255,255,0.85)',
+                color: 'var(--text-secondary)',
                 fontSize: '0.95rem',
                 lineHeight: 1.6
               }}

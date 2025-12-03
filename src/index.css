@@ -2,24 +2,82 @@
   font-family: 'Outfit', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #0f0f0f;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--bg-body);
+
+  --bg-body: #070b12;
+  --navbar-bg: rgba(20, 20, 20, 0.7);
+  --navbar-border: rgba(255, 255, 255, 0.08);
+  --surface-main: rgba(30, 30, 30, 0.95);
+  --surface-alt: rgba(255, 255, 255, 0.03);
+  --surface-hover: rgba(255, 255, 255, 0.07);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --icon-btn-bg: rgba(255, 255, 255, 0.05);
+  --icon-btn-hover-bg: rgba(255, 255, 255, 0.1);
+  --icon-btn-border: rgba(255, 255, 255, 0.1);
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --button-gradient-from: #00d9ff;
+  --button-gradient-to: #6366f1;
+  --modal-border: rgba(0, 217, 255, 0.3);
+  --shadow-strong: 0 24px 80px rgba(0, 0, 0, 0.7);
+  --scrollbar-track: rgba(255, 255, 255, 0.02);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.25);
+  --body-glow-one: rgba(0, 242, 255, 0.15);
+  --body-glow-two: rgba(255, 0, 128, 0.1);
+  --chip-sabah-bg: rgba(255, 215, 0, 0.08);
+  --chip-sabah-border: rgba(255, 215, 0, 0.2);
+  --chip-sabah-text: #FFD700;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg-body: #f8fafc;
+  --navbar-bg: rgba(255, 255, 255, 0.9);
+  --navbar-border: rgba(15, 23, 42, 0.08);
+  --surface-main: rgba(255, 255, 255, 0.95);
+  --surface-alt: rgba(15, 23, 42, 0.05);
+  --surface-hover: rgba(15, 23, 42, 0.08);
+  --border-soft: rgba(15, 23, 42, 0.12);
+  --border-strong: rgba(15, 23, 42, 0.2);
+  --icon-btn-bg: rgba(15, 23, 42, 0.08);
+  --icon-btn-hover-bg: rgba(15, 23, 42, 0.16);
+  --icon-btn-border: rgba(15, 23, 42, 0.15);
+  --text-primary: #0f172a;
+  --text-secondary: rgba(15, 23, 42, 0.75);
+  --text-muted: rgba(15, 23, 42, 0.55);
+  --button-gradient-from: #2563eb;
+  --button-gradient-to: #22d3ee;
+  --modal-border: rgba(37, 99, 235, 0.3);
+  --shadow-strong: 0 24px 60px rgba(15, 23, 42, 0.25);
+  --scrollbar-track: rgba(15, 23, 42, 0.08);
+  --scrollbar-thumb: rgba(15, 23, 42, 0.2);
+  --scrollbar-thumb-hover: rgba(15, 23, 42, 0.35);
+  --body-glow-one: rgba(14, 165, 233, 0.2);
+  --body-glow-two: rgba(248, 113, 113, 0.25);
+  --chip-sabah-bg: rgba(250, 204, 21, 0.14);
+  --chip-sabah-border: rgba(202, 138, 4, 0.55);
+  --chip-sabah-text: #854d0e;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #0f0f0f;
+  background: var(--bg-body);
+  color: var(--text-primary);
   height: 100vh;
   overflow: hidden;
+  position: relative;
 }
 
 /* Abstract Background Elements */
@@ -29,7 +87,7 @@ body::before {
   width: 60vw;
   height: 60vw;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+  background: radial-gradient(circle, var(--body-glow-one) 0%, rgba(0, 0, 0, 0) 70%);
   top: -20%;
   left: -10%;
   z-index: -1;
@@ -43,7 +101,7 @@ body::after {
   width: 50vw;
   height: 50vw;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 0, 128, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+  background: radial-gradient(circle, var(--body-glow-two) 0%, rgba(0, 0, 0, 0) 70%);
   bottom: -10%;
   right: -10%;
   z-index: -1;
@@ -74,4 +132,5 @@ body::after {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  color: var(--text-primary);
 }

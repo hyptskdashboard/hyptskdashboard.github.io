@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Box, Badge, Dialog, DialogTitle, DialogContent, TextField, Button, Stack } from '@mui/material';
-import { InfoOutlined, FolderOpen, NotificationsNone } from '@mui/icons-material';
+import { InfoOutlined, FolderOpen, NotificationsNone, LightModeOutlined, DarkModeOutlined } from '@mui/icons-material';
 import InfoModal from './InfoModal';
 import FileManagementModal from './FileManagementModal';
 import NotificationsModal from './NotificationsModal';
 import type { NotificationItem } from '../types';
 import { filterActiveNotifications, getReadNotificationIds, markNotificationsRead } from '../utils/notifications';
+import { useThemeMode } from '../theme/ThemeProvider';
 
 const Navbar: React.FC = () => {
     const [infoOpen, setInfoOpen] = useState(false);
@@ -18,6 +19,8 @@ const Navbar: React.FC = () => {
     const [savingNotification, setSavingNotification] = useState(false);
     const [notifications, setNotifications] = useState<NotificationItem[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
+    const { mode, toggleMode } = useThemeMode();
+    const isDarkMode = mode === 'dark';
 
     useEffect(() => {
         const loadNotifications = async () => {
@@ -96,21 +99,21 @@ const Navbar: React.FC = () => {
             <AppBar
                 position="fixed"
                 sx={{
-                    background: 'rgba(20, 20, 20, 0.7)',
+                    background: 'var(--navbar-bg)',
                     backdropFilter: 'blur(20px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                    borderBottom: '1px solid var(--navbar-border)',
+                    boxShadow: 'var(--shadow-strong)',
                 }}
             >
                 <Toolbar
                     sx={{
                         justifyContent: 'space-between',
                         minHeight: { xs: 56, sm: 64 },
-                        px: { xs: 1.5, sm: 2 },
+                        px: { xs: 1, sm: 2 },
                     }}
                 >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.75, sm: 1 }, minWidth: 0, flexShrink: 1 }}>
                         <Typography
                             variant="h6"
                             component="div"
@@ -118,30 +121,31 @@ const Navbar: React.FC = () => {
                                 fontWeight: 700,
                                 fontFamily: '"Outfit", sans-serif',
                                 letterSpacing: '-0.5px',
-                                background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                fontSize: { xs: '1rem', sm: '1.3rem' }
+                            color: 'var(--text-primary)',
+                                fontSize: { xs: '0.95rem', sm: '1.3rem' },
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
                             }}
                         >
                             TSK Haydarpaşa Yurdu
                         </Typography>
                     </Box>
 
-                    <Box sx={{ display: 'flex', gap: 0.75 }}>
+                    <Box sx={{ display: 'flex', gap: { xs: 0.4, sm: 0.75 }, flexShrink: 0 }}>
                         <IconButton
                             onClick={() => setNotificationsOpen(true)}
                             sx={{
-                                color: 'rgba(255,255,255,0.9)',
-                                background: 'rgba(255,255,255,0.05)',
+                                color: 'var(--text-primary)',
+                                background: 'var(--icon-btn-bg)',
                                 backdropFilter: 'blur(5px)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                width: { xs: 36, sm: 40 },
-                                height: { xs: 36, sm: 40 },
-                                '& svg': { fontSize: { xs: 18, sm: 20 } },
+                                border: '1px solid var(--icon-btn-border)',
+                                width: { xs: 32, sm: 40 },
+                                height: { xs: 32, sm: 40 },
+                                '& svg': { fontSize: { xs: 16, sm: 20 } },
                                 '&:hover': {
-                                    background: 'rgba(255,255,255,0.1)',
-                                    border: '1px solid rgba(255,255,255,0.2)',
+                                    background: 'var(--icon-btn-hover-bg)',
+                                    border: '1px solid var(--border-strong)',
                                 },
                                 transition: 'all 0.2s'
                             }}
@@ -158,16 +162,16 @@ const Navbar: React.FC = () => {
                         <IconButton
                             onClick={() => setFilesOpen(true)}
                             sx={{
-                                color: 'rgba(255,255,255,0.9)',
-                                background: 'rgba(255,255,255,0.05)',
+                                color: 'var(--text-primary)',
+                                background: 'var(--icon-btn-bg)',
                                 backdropFilter: 'blur(5px)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                width: { xs: 36, sm: 40 },
-                                height: { xs: 36, sm: 40 },
-                                '& svg': { fontSize: { xs: 18, sm: 20 } },
+                                border: '1px solid var(--icon-btn-border)',
+                                width: { xs: 32, sm: 40 },
+                                height: { xs: 32, sm: 40 },
+                                '& svg': { fontSize: { xs: 16, sm: 20 } },
                                 '&:hover': {
-                                    background: 'rgba(255,255,255,0.1)',
-                                    border: '1px solid rgba(255,255,255,0.2)',
+                                    background: 'var(--icon-btn-hover-bg)',
+                                    border: '1px solid var(--border-strong)',
                                 },
                                 transition: 'all 0.2s'
                             }}
@@ -178,21 +182,46 @@ const Navbar: React.FC = () => {
                         <IconButton
                             onClick={() => setInfoOpen(true)}
                             sx={{
-                                color: 'rgba(255,255,255,0.9)',
-                                background: 'rgba(255,255,255,0.05)',
+                                color: 'var(--text-primary)',
+                                background: 'var(--icon-btn-bg)',
                                 backdropFilter: 'blur(5px)',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                width: { xs: 36, sm: 40 },
-                                height: { xs: 36, sm: 40 },
-                                '& svg': { fontSize: { xs: 18, sm: 20 } },
+                                border: '1px solid var(--icon-btn-border)',
+                                width: { xs: 32, sm: 40 },
+                                height: { xs: 32, sm: 40 },
+                                '& svg': { fontSize: { xs: 16, sm: 20 } },
                                 '&:hover': {
-                                    background: 'rgba(255,255,255,0.1)',
-                                    border: '1px solid rgba(255,255,255,0.2)',
+                                    background: 'var(--icon-btn-hover-bg)',
+                                    border: '1px solid var(--border-strong)',
                                 },
                                 transition: 'all 0.2s'
                             }}
                         >
                             <InfoOutlined />
+                        </IconButton>
+
+                        <IconButton
+                            onClick={toggleMode}
+                            aria-label="Tema değiştir"
+                            sx={{
+                                color: 'var(--text-primary)',
+                                background: 'var(--icon-btn-bg)',
+                                backdropFilter: 'blur(5px)',
+                                border: '1px solid var(--icon-btn-border)',
+                                width: { xs: 32, sm: 40 },
+                                height: { xs: 32, sm: 40 },
+                                '& svg': { fontSize: { xs: 16, sm: 20 } },
+                                '&:hover': {
+                                    background: 'var(--icon-btn-hover-bg)',
+                                    border: '1px solid var(--border-strong)',
+                                },
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            {isDarkMode ? (
+                                <LightModeOutlined />
+                            ) : (
+                                <DarkModeOutlined />
+                            )}
                         </IconButton>
                     </Box>
                 </Toolbar>
@@ -222,13 +251,13 @@ const Navbar: React.FC = () => {
                 fullWidth
                 PaperProps={{
                     sx: {
-                        background: 'rgba(30, 30, 30, 0.95)',
+                        background: 'var(--surface-main)',
                         backdropFilter: 'blur(40px) saturate(180%)',
                         WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        border: '1px solid var(--border-soft)',
                         borderRadius: 4,
-                        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
-                        color: 'white'
+                        boxShadow: 'var(--shadow-strong)',
+                        color: 'var(--text-primary)'
                     }
                 }}
             >
@@ -238,7 +267,7 @@ const Navbar: React.FC = () => {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         pb: 2,
-                        borderBottom: '1px solid rgba(255,255,255,0.08)'
+                        borderBottom: '1px solid var(--border-soft)'
                     }}
                 >
                     <Typography
@@ -250,10 +279,10 @@ const Navbar: React.FC = () => {
                     <IconButton
                         onClick={() => setAddModalOpen(false)}
                         sx={{
-                            color: 'rgba(255,255,255,0.7)',
+                            color: 'var(--text-secondary)',
                             '&:hover': {
-                                background: 'rgba(255,255,255,0.1)',
-                                color: 'white'
+                                background: 'var(--surface-hover)',
+                                color: 'var(--text-primary)'
                             }
                         }}
                     >
@@ -266,19 +295,19 @@ const Navbar: React.FC = () => {
                         sx={{
                             mt: 1.25,
                             '& .MuiInputBase-root': {
-                                color: 'rgba(255,255,255,0.95)',
+                                color: 'var(--text-primary)',
                             },
                             '& .MuiInputLabel-root': {
-                                color: 'rgba(255,255,255,0.8)',
+                                color: 'var(--text-secondary)',
                             },
                             '& .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'rgba(255,255,255,0.3)',
+                                borderColor: 'var(--border-soft)',
                             },
                             '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'rgba(255,255,255,0.6)',
+                                borderColor: 'var(--border-strong)',
                             },
                             '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                borderColor: '#ffffff',
+                                borderColor: 'var(--text-primary)',
                             },
                         }}
                     >
@@ -324,12 +353,13 @@ const Navbar: React.FC = () => {
                                 onClick={handleCreateNotification}
                                 disabled={savingNotification || !newTitle.trim() || !newMessage.trim() || !newEndAt}
                                 sx={{
-                                    background: 'linear-gradient(135deg, #00D9FF, #6366F1)',
+                                    background: 'linear-gradient(135deg, var(--button-gradient-from), var(--button-gradient-to))',
                                     color: '#ffffff !important',
                                     textTransform: 'none',
                                     fontWeight: 600,
                                     '&:hover': {
-                                        background: 'linear-gradient(135deg, #22d3ee, #4f46e5)'
+                                        background: 'linear-gradient(135deg, var(--button-gradient-from), var(--button-gradient-to))',
+                                        opacity: 0.9
                                     }
                                 }}
                             >
